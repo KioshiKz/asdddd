@@ -168,8 +168,12 @@ namespace OiTech.App
                     continue;
                 }
 
-                // Проверяем, не обработали ли уже этот предмет
-                string subjectKey = $"{(subject ?? "").Trim().ToUpperInvariant()}_{(subjectCode ?? "").Trim().ToUpperInvariant()}";
+                // Проверяем, не обработали ли уже этот предмет.
+                // Ключ включает саму колонку: в реальных файлах встречаются разные
+                // столбцы с дословно одинаковым текстом заголовка (например,
+                // скопированные результаты обучения "РО 4.1..." под разными ПМ) —
+                // это разные предметы с разными оценками, дедуп по тексту их путал.
+                string subjectKey = $"{c}_{(subject ?? "").Trim().ToUpperInvariant()}_{(subjectCode ?? "").Trim().ToUpperInvariant()}";
 
                 if (processedSubjects.Contains(subjectKey))
                 {
@@ -613,11 +617,18 @@ namespace OiTech.App
             if (Regex.IsMatch(text, @"^(ПМ|ОН|КМ|ЖММ|ЖБП|ООД|ОГС|ОГСЭ)\s*[\d\.]+", RegexOptions.IgnoreCase))
                 return false; // НЕ пропускаем коды модулей
 
-            if (lower.Contains("фио") || lower.Contains("таж") || lower.Contains("аты-жөні") ||
-                lower.Contains("аты жөні") || lower.Contains("пайыз") || lower.Contains("әріп") ||
-                lower.Contains("традиц") || lower.Contains("сандық") || lower.Contains("балл") ||
-                lower.Contains("баға") || lower.Contains("оценка") || lower.Contains("кредит") ||
-                lower.Contains("сағат") || lower.Contains("час")) return true;
+            // Границы слова (\b) обязательны: без них, например, "час" ловит
+            // "Участвовать", "оценка" — "оценивать", а это реальные названия
+            // предметов/результатов обучения, а не служебные заголовки колонок
+            // (что и приводило к пропаданию таких столбцов из ведомости).
+            if (Regex.IsMatch(lower, @"\bфио\b") || Regex.IsMatch(lower, @"\bтаж\b") ||
+                lower.Contains("аты-жөні") || lower.Contains("аты жөні") ||
+                Regex.IsMatch(lower, @"\bпайыз") || Regex.IsMatch(lower, @"\bәріп") ||
+                Regex.IsMatch(lower, @"\bтрадиц") || Regex.IsMatch(lower, @"\bсандық") ||
+                Regex.IsMatch(lower, @"\bбалл") || Regex.IsMatch(lower, @"\bбаға\b") ||
+                Regex.IsMatch(lower, @"\bоценка\b") || Regex.IsMatch(lower, @"\bкредит(ы|ов|а)?\b") ||
+                Regex.IsMatch(lower, @"\bсағат") || Regex.IsMatch(lower, @"\bчас(а|ов|ы)?\b"))
+                return true;
 
             // Проверяем, что это не "ПМ 1", "ПМ.01" и т.д.
             if (Regex.IsMatch(text, @"^ПМ\s*[\d\.]+", RegexOptions.IgnoreCase))

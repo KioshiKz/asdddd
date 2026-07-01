@@ -1,0 +1,556 @@
+<UserControl x:Class="OiTech.App.TemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{DynamicResource BgDarkBrush}">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="OnGeneration">
+            <DoubleAnimation Storyboard.TargetName="DocumentContent"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0" To="1"
+                             Duration="0:0:0.7"/>
+            <DoubleAnimation Storyboard.TargetName="DocumentTransform"
+                             Storyboard.TargetProperty="Y"
+                             From="50" To="0"
+                             Duration="0:0:0.7">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <DockPanel>
+
+        <!-- ═══ TOOLBAR ═══ -->
+        <Border DockPanel.Dock="Top"
+                Background="{DynamicResource BgCardBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="12,8">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Row 1 -->
+                <WrapPanel Grid.Row="0" Margin="0,0,0,6">
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                Margin="0,0,15,0">
+                        <TextBlock Text="{DynamicResource TemplatePreview}"
+                                   Foreground="{DynamicResource TextWhiteBrush}"
+                                   FontSize="12"
+                                   FontWeight="ExtraBold"/>
+                    </StackPanel>
+
+                    <!-- Document Type -->
+                    <ComboBox x:Name="DocTypeCombo"
+                              Width="130"
+                              Height="26"
+                              FontSize="11"
+                              SelectedIndex="0"
+                              SelectionChanged="DocType_Changed">
+                        <ComboBoxItem Content="Ведомость"/>
+                        <ComboBoxItem Content="Диплом"/>
+                    </ComboBox>
+
+                    <Border Width="1"
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="12,4"
+                            Height="18"/>
+
+                    <!-- Document Language -->
+                    <ComboBox x:Name="LangCombo"
+                              Width="60"
+                              Height="26"
+                              FontSize="11"
+                              SelectedIndex="0"
+                              SelectionChanged="Lang_Changed">
+                        <ComboBoxItem Content="ҚАЗ"/>
+                        <ComboBoxItem Content="РУС"/>
+                    </ComboBox>
+
+                    <Border Width="1"
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="12,4"
+                            Height="18"/>
+
+                    <!-- Navigation -->
+                    <Border Background="{DynamicResource BgHoverBrush}"
+                            CornerRadius="6"
+                            Padding="2">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Width="28"
+                                    Height="26"
+                                    Click="PrevStudent"
+                                    Style="{StaticResource ActionButton}"
+                                    Background="Transparent"
+                                    Foreground="{DynamicResource TextWhiteBrush}"
+                                    Padding="0"
+                                    FontSize="14"
+                                    FontWeight="Bold">
+                                <TextBlock Text="&lt;"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Button>
+
+                            <TextBlock x:Name="StudentIndexLabel"
+                                       Text="1/1"
+                                       Foreground="{DynamicResource TextWhiteBrush}"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"
+                                       Margin="8,0"/>
+
+                            <Button Width="28"
+                                    Height="26"
+                                    Click="NextStudent"
+                                    Style="{StaticResource ActionButton}"
+                                    Background="Transparent"
+                                    Foreground="{DynamicResource TextWhiteBrush}"
+                                    Padding="0"
+                                    FontSize="14"
+                                    FontWeight="Bold">
+                                <TextBlock Text="&gt;"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Width="1"
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="12,4"
+                            Height="18"/>
+
+                    <!-- Print -->
+                    <Button Height="28"
+                            Padding="12,0"
+                            Margin="0,0,4,0"
+                            Click="PrintSheet"
+                            Style="{StaticResource ActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE749;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"/>
+                            <TextBlock Text="{DynamicResource TemplatePrint}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Excel export -->
+                    <Button Height="28"
+                            Padding="12,0"
+                            Margin="0,0,4,0"
+                            Click="ExportExcel"
+                            Style="{StaticResource ActionButton}"
+                            Background="{StaticResource OrangeGradient}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74E;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"/>
+                            <TextBlock Text="Excel"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Border Width="1"
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="8,4"
+                            Height="18"/>
+
+                    <!-- Load background page 1 -->
+                    <Button Height="28"
+                            Padding="10,0"
+                            Margin="0,0,3,0"
+                            Click="LoadBackground"
+                            Style="{StaticResource ActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xEB9F;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock Text="Фон (лицо)"
+                                       FontSize="10"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Load background page 2 -->
+                    <Button Height="28"
+                            Padding="10,0"
+                            Click="LoadBackground2"
+                            Style="{StaticResource ActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xEB9F;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,5,0"/>
+                            <TextBlock Text="Фон (оборот)"
+                                       FontSize="10"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </WrapPanel>
+
+                <!-- Row 2: settings -->
+                <WrapPanel Grid.Row="1"
+                           Orientation="Horizontal">
+
+                    <!-- Margins -->
+                    <TextBlock Text="{DynamicResource TemplateMargins}"
+                               Foreground="{DynamicResource TextDimBrush}"
+                               FontSize="9"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="0,0,6,0"/>
+
+                    <TextBox x:Name="MarginTop"
+                             Text="5"
+                             Width="28"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             TextChanged="Margin_Changed"/>
+
+                    <TextBox x:Name="MarginRight"
+                             Text="5"
+                             Width="28"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             Margin="3,0"
+                             TextChanged="Margin_Changed"/>
+
+                    <TextBox x:Name="MarginBottom"
+                             Text="5"
+                             Width="28"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             Margin="0,0,3,0"
+                             TextChanged="Margin_Changed"/>
+
+                    <TextBox x:Name="MarginLeft"
+                             Text="5"
+                             Width="28"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             TextChanged="Margin_Changed"/>
+
+                    <!-- Font -->
+                    <TextBlock Text="{DynamicResource TemplateFont}"
+                               Foreground="{DynamicResource TextDimBrush}"
+                               FontSize="9"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="15,0,6,0"/>
+
+                    <ComboBox x:Name="FontFamilyCombo"
+                              Width="130"
+                              Height="22"
+                              FontSize="10"
+                              SelectedIndex="0"
+                              SelectionChanged="Font_Changed">
+                        <ComboBoxItem Content="Times New Roman"/>
+                        <ComboBoxItem Content="Calibri"/>
+                        <ComboBoxItem Content="Arial"/>
+                        <ComboBoxItem Content="Segoe UI"/>
+                    </ComboBox>
+
+                    <TextBox x:Name="FontSizeBox"
+                             Text="9"
+                             Width="28"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             Margin="6,0,0,0"
+                             TextChanged="FontSize_Changed"/>
+
+                    <Border Width="1"
+                            Background="{DynamicResource BorderBrush}"
+                            Margin="12,2"
+                            Height="16"/>
+
+                    <!-- X / Y -->
+                    <TextBlock Text="X:"
+                               Foreground="{DynamicResource TextDimBrush}"
+                               FontSize="9"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="0,0,3,0"/>
+
+                    <TextBox x:Name="FieldXBox"
+                             Text="0"
+                             Width="42"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             TextChanged="FieldCoord_Changed"/>
+
+                    <TextBlock Text="Y:"
+                               Foreground="{DynamicResource TextDimBrush}"
+                               FontSize="9"
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="8,0,3,0"/>
+
+                    <TextBox x:Name="FieldYBox"
+                             Text="0"
+                             Width="42"
+                             Height="20"
+                             FontSize="10"
+                             Padding="2"
+                             TextChanged="FieldCoord_Changed"/>
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <!-- ═══ PREVIEW ═══ -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto"
+                      Background="{DynamicResource BgContentBrush}"
+                      Padding="0,30">
+
+            <StackPanel x:Name="DocumentContent"
+                        HorizontalAlignment="Center"
+                        Opacity="1">
+                <StackPanel.RenderTransform>
+                    <TranslateTransform x:Name="DocumentTransform" Y="0"/>
+                </StackPanel.RenderTransform>
+
+                <!-- ═══ ДИПЛОМ ═══ -->
+                <Border x:Name="DiplomaPage"
+                        Background="White"
+                        Width="1100"
+                        Height="780"
+                        CornerRadius="2"
+                        Visibility="Collapsed">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="40"
+                                          ShadowDepth="10"
+                                          Opacity="0.6"
+                                          Color="Black"/>
+                    </Border.Effect>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Казахская сторона -->
+                        <Grid Grid.Column="0">
+                            <Image x:Name="DiplomaBgLeft"
+                                   Source="/Resources/diplom_kz.png"
+                                   IsHitTestVisible="False"
+                                   Stretch="Fill"
+                                   Opacity="1"/>
+                            <Canvas x:Name="DiplomaLeftCanvas"
+                                    Background="Transparent"
+                                    PreviewMouseDown="Canvas_MouseDown"
+                                    PreviewMouseMove="Canvas_MouseMove"
+                                    PreviewMouseUp="Canvas_MouseUp"/>
+                        </Grid>
+
+                        <!-- Русская сторона -->
+                        <Grid Grid.Column="1">
+                            <Image x:Name="DiplomaBgRight"
+                                   Source="/Resources/diplom_ru.png"
+                                   IsHitTestVisible="False"
+                                   Stretch="Fill"
+                                   Opacity="1"/>
+                            <Canvas x:Name="DiplomaRightCanvas"
+                                    Background="Transparent"
+                                    PreviewMouseDown="Canvas_MouseDown"
+                                    PreviewMouseMove="Canvas_MouseMove"
+                                    PreviewMouseUp="Canvas_MouseUp"/>
+                        </Grid>
+
+                        <Border Grid.ColumnSpan="2"
+                                Width="1"
+                                Background="#CCCCCC"
+                                HorizontalAlignment="Center"
+                                IsHitTestVisible="False"/>
+                    </Grid>
+                </Border>
+
+                <!-- ═══ ВЕДОМОСТЬ — ЛИЦЕВАЯ ═══ -->
+                <Border x:Name="VedomostPage"
+        Background="White"
+        Width="1123"
+        Height="794"
+        CornerRadius="2"
+        Visibility="Visible">
+
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="40"
+                          ShadowDepth="10"
+                          Opacity="0.6"
+                          Color="Black"/>
+                    </Border.Effect>
+
+                    <Grid>
+
+                        <!-- ФОН -->
+                        <Image x:Name="VedomostBg"
+               Source="/Resources/vedomost.png"
+               Stretch="Fill"
+               IsHitTestVisible="False"
+               Opacity="1"/>
+
+                        <!-- ОСНОВНОЙ CANVAS -->
+                        <Canvas x:Name="VedomostCanvas"
+                Background="Transparent"
+
+                PreviewMouseDown="Canvas_MouseDown"
+                PreviewMouseMove="Canvas_MouseMove"
+                PreviewMouseUp="Canvas_MouseUp"/>
+
+                        <!-- КОНТЕНТ -->
+                        <Border x:Name="PagePadding"
+                Padding="50,40"
+                Background="Transparent">
+
+                            <StackPanel x:Name="PageContent">
+
+                                <TextBlock x:Name="TitleLine1"
+                           TextAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="12"/>
+
+                                <TextBlock x:Name="TitleLine2"
+                           TextAlignment="Center"
+                           FontWeight="Bold"
+                           FontSize="12"
+                           Margin="0,0,0,4"/>
+
+                                <TextBlock x:Name="TkbLine"
+                           TextAlignment="Center"
+                           FontSize="9"
+                           Margin="0,0,0,12"/>
+
+                                <TextBlock x:Name="FioText"
+                           TextAlignment="Center"
+                           FontSize="13"
+                           FontWeight="Bold"
+                           TextDecorations="Underline"
+                           Margin="0,5,0,0"/>
+
+                                <TextBlock x:Name="FioLabel"
+                           TextAlignment="Center"
+                           FontSize="7.5"
+                           Foreground="#555"
+                           Margin="0,0,0,8"/>
+
+                                <TextBlock x:Name="YearsLine"
+                           TextAlignment="Center"
+                           FontSize="10"
+                           Margin="0,0,0,8"/>
+
+                                <TextBlock x:Name="InstitutionLabel"
+                           TextAlignment="Center"
+                           FontSize="7.5"
+                           Foreground="#555"
+                           Margin="0,0,0,8"/>
+
+                                <TextBlock x:Name="SpecText"
+                           TextAlignment="Center"
+                           FontSize="10"
+                           FontWeight="Bold"
+                           TextDecorations="Underline"
+                           Margin="10,0,10,0"/>
+
+                                <TextBlock x:Name="SpecLabel"
+                           TextAlignment="Center"
+                           FontSize="7.5"
+                           Foreground="#555"
+                           Margin="0,0,0,8"/>
+
+                                <TextBlock x:Name="QualLabel"
+                           TextAlignment="Center"
+                           FontSize="7.5"
+                           Foreground="#555"
+                           Margin="0,0,0,10"/>
+
+                                <TextBlock x:Name="IntroText"
+                           FontSize="10"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,15"/>
+
+                                <Border BorderBrush="Black"
+                        BorderThickness="1.5">
+
+                                    <StackPanel x:Name="GradeTable"/>
+
+                                </Border>
+
+                                <Grid Margin="0,40,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock x:Name="DateLabel"
+                               Grid.Column="0"
+                               FontSize="10"/>
+
+                                    <TextBlock x:Name="SignLabel"
+                               Grid.Column="1"
+                               FontSize="10"
+                               TextAlignment="Right"/>
+                                </Grid>
+
+                            </StackPanel>
+                        </Border>
+
+                    </Grid>
+                </Border>
+
+
+                <!-- ═══ ВЕДОМОСТЬ — ОБОРОТ ═══ -->
+                <Border x:Name="VedomostPage2"
+        Background="White"
+        Width="1123"
+        Height="794"
+        CornerRadius="2"
+        Visibility="Collapsed"
+        Margin="0,30,0,0">
+
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="40"
+                          ShadowDepth="10"
+                          Opacity="0.6"
+                          Color="Black"/>
+                    </Border.Effect>
+
+                    <Grid>
+
+                        <!-- ФОН -->
+                        <Image x:Name="VedomostBg2"
+               Source="/Resources/vedomost2.png"
+               Stretch="Fill"
+               IsHitTestVisible="False"
+               Opacity="1"/>
+
+                        <!-- CANVAS ОБОРОТА -->
+                        <Canvas x:Name="VedomostCanvas2"
+                Background="Transparent"
+
+                PreviewMouseDown="Canvas_MouseDown"
+                PreviewMouseMove="Canvas_MouseMove"
+                PreviewMouseUp="Canvas_MouseUp"/>
+
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

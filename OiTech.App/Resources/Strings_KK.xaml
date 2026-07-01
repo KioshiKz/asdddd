@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Navigation -->
+    <sys:String x:Key="NavHome">Басты бет</sys:String>
+    <sys:String x:Key="NavStudents">Студенттер базасы</sys:String>
+    <sys:String x:Key="NavImport">Excel импорты</sys:String>
+    <sys:String x:Key="NavImportWord">Word импорты</sys:String>
+    <sys:String x:Key="NavTemplates">Үлгілер</sys:String>
+    <sys:String x:Key="NavReports">Есептер</sys:String>
+
+    <!-- Theme / Language toggle labels -->
+    <sys:String x:Key="ThemeToLight">Жарық тақырып</sys:String>
+    <sys:String x:Key="ThemeToDark">Қараңғы тақырып</sys:String>
+
+    <!-- Dashboard -->
+    <sys:String x:Key="DashboardTitle">БАСТЫ ТАҚТА</sys:String>
+    <sys:String x:Key="WelcomeTitle">OiTech жүйесіне қош келдіңіз!</sys:String>
+    <sys:String x:Key="WelcomeSubtitle">Бағалау парақтарын толтыруды автоматтандыру жүйесі</sys:String>
+    <sys:String x:Key="StatsStudents">СТУДЕНТ</sys:String>
+    <sys:String x:Key="StatsSubjects">ПӘНДЕР</sys:String>
+    <sys:String x:Key="StatsPrinted">БАСЫЛДЫ</sys:String>
+    <sys:String x:Key="ActionLogTitle">ӘРЕКЕТТЕР ЖУРНАЛЫ</sys:String>
+    <sys:String x:Key="ActionLogEmpty">Жұмысты бастау үшін Excel файлын импорттаңыз</sys:String>
+
+    <!-- Students view -->
+    <sys:String x:Key="StudentsTitle">Студенттер базасы</sys:String>
+    <sys:String x:Key="StudentsTotal">Барлығы</sys:String>
+    <sys:String x:Key="ColNumber">№</sys:String>
+    <sys:String x:Key="ColFIO">А.Ж.Ә.</sys:String>
+    <sys:String x:Key="ColSpeciality">Мамандық</sys:String>
+    <sys:String x:Key="ColGroup">Топ</sys:String>
+
+    <!-- Reports view -->
+    <sys:String x:Key="ReportsTitle">Есептер</sys:String>
+    <sys:String x:Key="ReportsSummaryTitle">Импортталған деректер бойынша жиынтық</sys:String>
+    <sys:String x:Key="ReportsTotalStudents">Барлық студенттер:</sys:String>
+    <sys:String x:Key="ReportsSubjects">Пәндер саны:</sys:String>
+    <sys:String x:Key="ReportsAvgGrade">Орташа балл:</sys:String>
+    <sys:String x:Key="ReportsPrinted">Басылған парақтар:</sys:String>
+    <sys:String x:Key="ReportsGradesBySubject">Пәндер бойынша орташа балл</sys:String>
+    <sys:String x:Key="NoGradesData">Бағалар туралы деректер жоқ</sys:String>
+
+    <!-- Template view toolbar -->
+    <sys:String x:Key="TemplatePreview">АЛДЫН АЛА ҚАРАУ</sys:String>
+    <sys:String x:Key="TemplateMargins">ЖИЕКТЕР (ММ):</sys:String>
+    <sys:String x:Key="TemplateFont">ҚАРІП:</sys:String>
+    <sys:String x:Key="TemplatePrint">Басып шығару</sys:String>
+
+    <!-- Message boxes -->
+    <sys:String x:Key="MsgNoData">Алдымен деректерді Excel-ден импорттаңыз.</sys:String>
+    <sys:String x:Key="MsgNoDataTitle">Деректер жоқ</sys:String>
+    <sys:String x:Key="MsgImportSuccess">Импортталды: {0} студент, {1} пән.</sys:String>
+    <sys:String x:Key="MsgImportSuccessTitle">Сәтті</sys:String>
+    <sys:String x:Key="MsgImportError">Импорт қатесі:\n{0}</sys:String>
+    <sys:String x:Key="MsgImportErrorTitle">Қате</sys:String>
+    <sys:String x:Key="ActionImported">Импорт: {0} студент, {1} пән — {2}</sys:String>
+    <sys:String x:Key="MsgFileSaved">Файл сәтті сақталды!</sys:String>
+    <sys:String x:Key="MsgFileSavedTitle">Сәтті</sys:String>
+
+</ResourceDictionary>

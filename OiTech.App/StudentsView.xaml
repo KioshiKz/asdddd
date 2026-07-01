@@ -1,0 +1,213 @@
+<UserControl x:Class="OiTech.App.StudentsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{DynamicResource BgDarkBrush}">
+    <Border Padding="28,24">
+        <DockPanel>
+
+            <!-- ═══ HEADER ═══ -->
+            <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="0,0,0,18">
+                <StackPanel>
+                    <TextBlock Text="{DynamicResource StudentsTitle}"
+                               Foreground="{DynamicResource TextWhiteBrush}"
+                               FontSize="24" FontWeight="Bold"/>
+                    <TextBlock x:Name="CountLabel"
+                               Foreground="{DynamicResource TextDimBrush}"
+                               FontSize="13" Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <!-- Import buttons -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Height="36" Padding="16,0" Margin="0,0,8,0"
+                            Click="ImportWord_Click" Style="{StaticResource ActionButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets"
+                                       VerticalAlignment="Center" Margin="0,0,8,0" FontSize="13"/>
+                            <TextBlock Text="Импорт Word" VerticalAlignment="Center" FontSize="13"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Height="36" Padding="16,0"
+                            Click="ImportExcel_Click" Style="{StaticResource ActionButton}"
+                            Background="{StaticResource GreenGradient}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8B5;" FontFamily="Segoe MDL2 Assets"
+                                       VerticalAlignment="Center" Margin="0,0,8,0" FontSize="13"/>
+                            <TextBlock Text="Импорт Excel" VerticalAlignment="Center" FontSize="13"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+
+            <!-- ═══ SEARCH ═══ -->
+            <Border DockPanel.Dock="Top" Margin="0,0,0,16"
+                    Background="{DynamicResource BgCardBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                    CornerRadius="10" Padding="14,0" Height="42">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
+                               Foreground="{DynamicResource TextDimBrush}" FontSize="13"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <Grid Grid.Column="1">
+                        <TextBlock x:Name="PlaceholderText"
+                                   Text="Поиск по ФИО, группе или специальности..."
+                                   Foreground="{DynamicResource TextDimBrush}"
+                                   FontSize="13" VerticalAlignment="Center"
+                                   IsHitTestVisible="False"/>
+                        <TextBox x:Name="SearchBox"
+                                 Background="Transparent" BorderThickness="0"
+                                 Foreground="{DynamicResource TextWhiteBrush}"
+                                 CaretBrush="{DynamicResource CaretBrush}"
+                                 FontSize="13" VerticalContentAlignment="Center"
+                                 TextChanged="Search_Changed"/>
+                    </Grid>
+                    <TextBlock x:Name="ClearBtn" Grid.Column="2"
+                               Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets"
+                               Foreground="{DynamicResource TextDimBrush}" FontSize="11"
+                               VerticalAlignment="Center" Cursor="Hand"
+                               Visibility="Collapsed" MouseDown="ClearSearch"/>
+                </Grid>
+            </Border>
+
+            <!-- ═══ TABLE ═══ -->
+            <Border Style="{StaticResource CardStyle}" Padding="0" ClipToBounds="True">
+                <DataGrid x:Name="StudentsGrid"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                          Background="Transparent"
+                          Foreground="{DynamicResource TextWhiteBrush}"
+                          BorderThickness="0"
+                          RowBackground="{DynamicResource DataGridRowBrush}"
+                          AlternatingRowBackground="{DynamicResource DataGridAltRowBrush}"
+                          FontSize="13"
+                          RowHeight="44"
+                          CanUserSortColumns="True"
+                          SelectionMode="Single"
+                          SelectionUnit="FullRow">
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{DynamicResource DataGridHeaderBrush}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource TextDimBrush}"/>
+                            <Setter Property="Padding" Value="14,12"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="{DynamicResource DataGridRowBrush}"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource BgHoverBrush}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource BgHoverBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="14,0"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridCell">
+                                        <Border Padding="{TemplateBinding Padding}"
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextWhiteBrush}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
+
+                    <DataGrid.Columns>
+
+                        <!-- № -->
+                        <DataGridTextColumn Binding="{Binding Number}" Width="60" FontSize="13">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource ColNumber}" FontSize="11"/>
+                            </DataGridTextColumn.Header>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextDimBrush}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- ФИО -->
+                        <DataGridTextColumn Binding="{Binding FIO}" Width="2.5*" FontSize="13">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource ColFIO}" FontSize="11"/>
+                            </DataGridTextColumn.Header>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextWhiteBrush}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Специальность -->
+                        <DataGridTextColumn Binding="{Binding Speciality}" Width="2*" FontSize="12">
+                            <DataGridTextColumn.Header>
+                                <TextBlock Text="{DynamicResource ColSpeciality}" FontSize="11"/>
+                            </DataGridTextColumn.Header>
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextDimBrush}"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Группа — badge -->
+                        <DataGridTemplateColumn Width="110">
+                            <DataGridTemplateColumn.Header>
+                                <TextBlock Text="{DynamicResource ColGroup}" FontSize="11"/>
+                            </DataGridTemplateColumn.Header>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{StaticResource AccentGradient}"
+                                            CornerRadius="6" Padding="8,3"
+                                            HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Group}"
+                                                   Foreground="White" FontSize="11"
+                                                   FontWeight="SemiBold"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+        </DockPanel>
+    </Border>
+</UserControl>

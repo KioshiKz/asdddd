@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Navigation -->
+    <sys:String x:Key="NavHome">Главная</sys:String>
+    <sys:String x:Key="NavStudents">База студентов</sys:String>
+    <sys:String x:Key="NavImport">Импорт Excel</sys:String>
+    <sys:String x:Key="NavImportWord">Импорт Word</sys:String>
+    <sys:String x:Key="NavTemplates">Шаблоны</sys:String>
+    <sys:String x:Key="NavReports">Отчеты</sys:String>
+
+    <!-- Theme / Language toggle labels -->
+    <sys:String x:Key="ThemeToLight">Светлая тема</sys:String>
+    <sys:String x:Key="ThemeToDark">Тёмная тема</sys:String>
+
+    <!-- Dashboard -->
+    <sys:String x:Key="DashboardTitle">ПРИБОРНАЯ ПАНЕЛЬ</sys:String>
+    <sys:String x:Key="WelcomeTitle">Добро пожаловать в OiTech!</sys:String>
+    <sys:String x:Key="WelcomeSubtitle">Система автоматизации заполнения ведомостей оценок</sys:String>
+    <sys:String x:Key="StatsStudents">СТУДЕНТОВ</sys:String>
+    <sys:String x:Key="StatsSubjects">ПРЕДМЕТОВ</sys:String>
+    <sys:String x:Key="StatsPrinted">НАПЕЧАТАНО</sys:String>
+    <sys:String x:Key="ActionLogTitle">ЛОГ ДЕЙСТВИЙ</sys:String>
+    <sys:String x:Key="ActionLogEmpty">Импортируйте Excel-файл, чтобы начать работу</sys:String>
+
+    <!-- Students view -->
+    <sys:String x:Key="StudentsTitle">База студентов</sys:String>
+    <sys:String x:Key="StudentsTotal">Всего</sys:String>
+    <sys:String x:Key="ColNumber">№</sys:String>
+    <sys:String x:Key="ColFIO">ФИО</sys:String>
+    <sys:String x:Key="ColSpeciality">Специальность</sys:String>
+    <sys:String x:Key="ColGroup">Группа</sys:String>
+
+    <!-- Reports view -->
+    <sys:String x:Key="ReportsTitle">Отчёты</sys:String>
+    <sys:String x:Key="ReportsSummaryTitle">Сводка по импортированным данным</sys:String>
+    <sys:String x:Key="ReportsTotalStudents">Всего студентов:</sys:String>
+    <sys:String x:Key="ReportsSubjects">Предметов:</sys:String>
+    <sys:String x:Key="ReportsAvgGrade">Средний балл:</sys:String>
+    <sys:String x:Key="ReportsPrinted">Напечатано ведомостей:</sys:String>
+    <sys:String x:Key="ReportsGradesBySubject">Средний балл по предметам</sys:String>
+    <sys:String x:Key="NoGradesData">Нет данных об оценках</sys:String>
+
+    <!-- Template view toolbar -->
+    <sys:String x:Key="TemplatePreview">ПРЕДПРОСМОТР</sys:String>
+    <sys:String x:Key="TemplateMargins">ПОЛЯ (ММ):</sys:String>
+    <sys:String x:Key="TemplateFont">ШРИФТ:</sys:String>
+    <sys:String x:Key="TemplatePrint">Печать</sys:String>
+
+    <!-- Message boxes -->
+    <sys:String x:Key="MsgNoData">Сначала импортируйте данные из Excel.</sys:String>
+    <sys:String x:Key="MsgNoDataTitle">Нет данных</sys:String>
+    <sys:String x:Key="MsgImportSuccess">Импортировано: {0} студентов, {1} предметов.</sys:String>
+    <sys:String x:Key="MsgImportSuccessTitle">Успех</sys:String>
+    <sys:String x:Key="MsgImportError">Ошибка импорта:\n{0}</sys:String>
+    <sys:String x:Key="MsgImportErrorTitle">Ошибка</sys:String>
+    <sys:String x:Key="ActionImported">Импорт: {0} студентов, {1} предметов — {2}</sys:String>
+    <sys:String x:Key="MsgFileSaved">Файл успешно сохранен!</sys:String>
+    <sys:String x:Key="MsgFileSavedTitle">Успех</sys:String>
+
+</ResourceDictionary>

@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\ДИПЛОМ.jpg" />
+    <None Remove="Resources\КАЗ ОБОРОТ.png" />
+    <None Remove="Resources\КАЗ.png" />
+    <None Remove="Resources\РУСС ОБОРОТ.png" />
+    <None Remove="Resources\РУСС.png" />
+    <None Remove="Templates\diplom_kaz_face.jpeg" />
+    <None Remove="Templates\diplom_rus_face.jpeg" />
+    <None Remove="Templates\vedomost_kaz_back.jpeg" />
+    <None Remove="Templates\vedomost_kaz_face.jpeg" />
+    <None Remove="Templates\vedomost_rus_back.jpeg" />
+    <None Remove="Templates\vedomost_rus_face.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Templates\diplom_kaz_face.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\diplom_rus_face.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\vedomost_kaz_back.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\vedomost_kaz_face.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\vedomost_rus_back.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\vedomost_rus_face.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="8.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\ДИПЛОМ.jpg" />
+    <Resource Include="Resources\КАЗ ОБОРОТ.png" />
+    <Resource Include="Resources\КАЗ.png" />
+    <Resource Include="Resources\РУСС ОБОРОТ.png" />
+    <Resource Include="Resources\РУСС.png" />
+  </ItemGroup>
+
+</Project>

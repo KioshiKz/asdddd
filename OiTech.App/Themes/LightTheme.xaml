@@ -1,0 +1,20 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="BgDarkBrush"          Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="BgCardBrush"           Color="#F6F8FA"/>
+    <SolidColorBrush x:Key="BgSidebarBrush"        Color="#F6F8FA"/>
+    <SolidColorBrush x:Key="BgHoverBrush"          Color="#E1E4E8"/>
+    <SolidColorBrush x:Key="BgContentBrush"        Color="#EAECEF"/>
+    <SolidColorBrush x:Key="BorderBrush"           Color="#D0D7DE"/>
+    <SolidColorBrush x:Key="TextWhiteBrush"        Color="#1F2328"/>
+    <SolidColorBrush x:Key="TextDimBrush"          Color="#57606A"/>
+    <SolidColorBrush x:Key="DataGridRowBrush"      Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="DataGridAltRowBrush"   Color="#F6F8FA"/>
+    <SolidColorBrush x:Key="DataGridHeaderBrush"   Color="#F6F8FA"/>
+    <SolidColorBrush x:Key="TextBoxBgBrush"        Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="CaretBrush"            Color="#1F2328"/>
+
+    <SolidColorBrush x:Key="WelcomeBannerBrush"    Color="#EFF2F5"/>
+
+</ResourceDictionary>

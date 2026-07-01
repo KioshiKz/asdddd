@@ -1,0 +1,62 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <!-- Navigation -->
+    <sys:String x:Key="NavHome">Home</sys:String>
+    <sys:String x:Key="NavStudents">Student Database</sys:String>
+    <sys:String x:Key="NavImport">Import Excel</sys:String>
+    <sys:String x:Key="NavImportWord">Import Word</sys:String>
+    <sys:String x:Key="NavTemplates">Templates</sys:String>
+    <sys:String x:Key="NavReports">Reports</sys:String>
+
+    <!-- Theme / Language toggle labels -->
+    <sys:String x:Key="ThemeToLight">Light Theme</sys:String>
+    <sys:String x:Key="ThemeToDark">Dark Theme</sys:String>
+
+    <!-- Dashboard -->
+    <sys:String x:Key="DashboardTitle">DASHBOARD</sys:String>
+    <sys:String x:Key="WelcomeTitle">Welcome to OiTech!</sys:String>
+    <sys:String x:Key="WelcomeSubtitle">Grade sheet automation system</sys:String>
+    <sys:String x:Key="StatsStudents">STUDENTS</sys:String>
+    <sys:String x:Key="StatsSubjects">SUBJECTS</sys:String>
+    <sys:String x:Key="StatsPrinted">PRINTED</sys:String>
+    <sys:String x:Key="ActionLogTitle">ACTION LOG</sys:String>
+    <sys:String x:Key="ActionLogEmpty">Import an Excel file to get started</sys:String>
+
+    <!-- Students view -->
+    <sys:String x:Key="StudentsTitle">Student Database</sys:String>
+    <sys:String x:Key="StudentsTotal">Total</sys:String>
+    <sys:String x:Key="ColNumber">№</sys:String>
+    <sys:String x:Key="ColFIO">Full Name</sys:String>
+    <sys:String x:Key="ColSpeciality">Specialty</sys:String>
+    <sys:String x:Key="ColGroup">Group</sys:String>
+
+    <!-- Reports view -->
+    <sys:String x:Key="ReportsTitle">Reports</sys:String>
+    <sys:String x:Key="ReportsSummaryTitle">Summary of Imported Data</sys:String>
+    <sys:String x:Key="ReportsTotalStudents">Total students:</sys:String>
+    <sys:String x:Key="ReportsSubjects">Subjects:</sys:String>
+    <sys:String x:Key="ReportsAvgGrade">Average grade:</sys:String>
+    <sys:String x:Key="ReportsPrinted">Printed sheets:</sys:String>
+    <sys:String x:Key="ReportsGradesBySubject">Average grade by subject</sys:String>
+    <sys:String x:Key="NoGradesData">No grade data available</sys:String>
+
+    <!-- Template view toolbar -->
+    <sys:String x:Key="TemplatePreview">PREVIEW</sys:String>
+    <sys:String x:Key="TemplateMargins">MARGINS (MM):</sys:String>
+    <sys:String x:Key="TemplateFont">FONT:</sys:String>
+    <sys:String x:Key="TemplatePrint">Print</sys:String>
+
+    <!-- Message boxes -->
+    <sys:String x:Key="MsgNoData">Please import data from Excel first.</sys:String>
+    <sys:String x:Key="MsgNoDataTitle">No Data</sys:String>
+    <sys:String x:Key="MsgImportSuccess">Imported: {0} students, {1} subjects.</sys:String>
+    <sys:String x:Key="MsgImportSuccessTitle">Success</sys:String>
+    <sys:String x:Key="MsgImportError">Import error:\n{0}</sys:String>
+    <sys:String x:Key="MsgImportErrorTitle">Error</sys:String>
+    <sys:String x:Key="ActionImported">Import: {0} students, {1} subjects — {2}</sys:String>
+    <sys:String x:Key="MsgFileSaved">File saved successfully!</sys:String>
+    <sys:String x:Key="MsgFileSavedTitle">Success</sys:String>
+
+</ResourceDictionary>

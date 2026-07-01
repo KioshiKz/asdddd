@@ -669,7 +669,7 @@ namespace OiTech.App
 
                 if (area == 0)
                 {
-                    AddGradeRow(
+                    double actualHeight = AddGradeRow(
                         VedomostCanvas,
                         i,
                         g,
@@ -685,11 +685,11 @@ namespace OiTech.App
                         rowHeight,
                         layout.LeftSubjectWidth);
 
-                    leftY += rowHeight;
+                    leftY += actualHeight;
                 }
                 else if (area == 1)
                 {
-                    AddGradeRow(
+                    double actualHeight = AddGradeRow(
                         VedomostCanvas,
                         i,
                         g,
@@ -705,11 +705,11 @@ namespace OiTech.App
                         rowHeight,
                         layout.RightSubjectWidth);
 
-                    rightY += rowHeight;
+                    rightY += actualHeight;
                 }
                 else if (area == 2)
                 {
-                    AddGradeRow(
+                    double actualHeight = AddGradeRow(
                         VedomostCanvas2,
                         i,
                         g,
@@ -725,11 +725,11 @@ namespace OiTech.App
                         rowHeight,
                         layout.SecondSubjectWidth);
 
-                    secondLeftY += rowHeight + layout.SecondRowGap;
+                    secondLeftY += actualHeight + layout.SecondRowGap;
                 }
                 else
                 {
-                    AddGradeRow(
+                    double actualHeight = AddGradeRow(
                         VedomostCanvas2,
                         i,
                         g,
@@ -745,7 +745,7 @@ namespace OiTech.App
                         rowHeight,
                         layout.SecondRightSubjectWidth);
 
-                    secondRightY += rowHeight + layout.SecondRowGap;
+                    secondRightY += actualHeight + layout.SecondRowGap;
                 }
             }
         }
@@ -764,7 +764,7 @@ namespace OiTech.App
             return layout.SecondRightSubjectWidth;
         }
 
-        private void AddGradeRow(
+        private double AddGradeRow(
             Canvas canvas,
             int index,
             GradeEntry g,
@@ -795,15 +795,25 @@ namespace OiTech.App
             //     7.2 Химия
             string noText = isPart ? "" : (index + 1).ToString();
 
-            AddEditableText(canvas, $"no_{index}", xNo, y, 28, rowHeight, noText, true);
-            AddEditableText(canvas, $"subject_{index}", subjectX, y - 1, subjectW, rowHeight, subjectText, false, true);
-            AddEditableText(canvas, $"hours_{index}", xHours, y, 34, rowHeight, g.Hours, true);
-            AddEditableText(canvas, $"credits_{index}", xCredits, y, 48, rowHeight, g.Credits, true);
+            Border subjectBorder = AddEditableText(canvas, $"subject_{index}", subjectX, y - 1, subjectW, rowHeight, subjectText, false, true);
 
-            AddEditableText(canvas, $"percent_{index}", xPercent, y, 32, rowHeight, g.Percentage, true);
-            AddEditableText(canvas, $"letter_{index}", xLetter, y, 38, rowHeight, g.LetterGrade, true);
-            AddEditableText(canvas, $"gpa_{index}", xGpa, y, 42, rowHeight, g.GPA, true);
-            AddEditableText(canvas, $"traditional_{index}", xTraditional, y, 52, rowHeight, g.TraditionalGrade, true);
+            // rowHeight — только предварительная оценка. Реальная высота строки —
+            // по факту созданной ячейки предмета (AddEditableText мог вырастить её
+            // под текст). Именно эту величину возвращаем вызывающему коду для
+            // сдвига Y следующей строки, а не исходную оценку — иначе при любом
+            // расхождении оценки с реальностью строки накладываются друг на друга.
+            double actualRowHeight = Math.Max(rowHeight, subjectBorder.Height);
+
+            AddEditableText(canvas, $"no_{index}", xNo, y, 28, actualRowHeight, noText, true);
+            AddEditableText(canvas, $"hours_{index}", xHours, y, 34, actualRowHeight, g.Hours, true);
+            AddEditableText(canvas, $"credits_{index}", xCredits, y, 48, actualRowHeight, g.Credits, true);
+
+            AddEditableText(canvas, $"percent_{index}", xPercent, y, 32, actualRowHeight, g.Percentage, true);
+            AddEditableText(canvas, $"letter_{index}", xLetter, y, 38, actualRowHeight, g.LetterGrade, true);
+            AddEditableText(canvas, $"gpa_{index}", xGpa, y, 42, actualRowHeight, g.GPA, true);
+            AddEditableText(canvas, $"traditional_{index}", xTraditional, y, 52, actualRowHeight, g.TraditionalGrade, true);
+
+            return actualRowHeight;
         }
 
         private bool IsGradePart(GradeEntry g)
@@ -1081,6 +1091,20 @@ namespace OiTech.App
             // кодом, чтобы сдвинуть Y для следующей строки — рамка предмета была на
             // 8px выше этого шага и наезжала на соседнюю строку, особенно заметно на
             // длинных многострочных названиях.
+            //
+            // Предсказанная заранее высота (rowHeight) — это только оценка. Чтобы
+            // соседние строки таблицы гарантированно не накладывались друг на друга
+            // независимо от того, насколько точна эта оценка, меряем здесь тот же
+            // самый TextBlock, который реально будет нарисован, и если ему нужно
+            // больше места — рамка вырастает под него. Вызывающий код читает
+            // получившуюся Border.Height и сдвигает следующую строку именно на неё.
+            if (wrap)
+            {
+                label.Measure(new Size(Math.Max(1, width), double.PositiveInfinity));
+
+                if (label.DesiredSize.Height > height)
+                    height = label.DesiredSize.Height;
+            }
 
             var border = new Border
             {

@@ -626,8 +626,16 @@ namespace OiTech.App
                 if (area == 0 && i >= layout.ForcedRightStartIndex)
                     area = 1;
 
+                string subjectPrintText = GetSubjectTextForPrint(g);
+
+                // Вложенные строки (7.1, 7.2 ...) печатаются с отступом слева (см.
+                // AddGradeRow), поэтому реальная ширина под текст у них меньше —
+                // это нужно учитывать при расчёте высоты строки, иначе перенос
+                // текста посчитается неверно и строки в таблице разъедутся.
+                double indentForRow = IsGradePart(g) ? 14 : 0;
+
                 double subjectWidth = GetSubjectWidth(layout, area);
-                double rowHeight = CalculateRealRowHeight(GetSubjectByLanguage(g), subjectWidth);
+                double rowHeight = CalculateRealRowHeight(subjectPrintText, Math.Max(40, subjectWidth - indentForRow));
 
                 if (area == 0 && leftY + rowHeight > layout.LeftBottomY)
                     area = 1;
@@ -635,7 +643,7 @@ namespace OiTech.App
                 if (area == 1)
                 {
                     subjectWidth = layout.RightSubjectWidth;
-                    rowHeight = CalculateRealRowHeight(GetSubjectByLanguage(g), subjectWidth);
+                    rowHeight = CalculateRealRowHeight(subjectPrintText, Math.Max(40, subjectWidth - indentForRow));
 
                     if (rightY + rowHeight > layout.RightBottomY)
                         area = 2;
@@ -644,7 +652,7 @@ namespace OiTech.App
                 if (area == 2)
                 {
                     subjectWidth = layout.SecondSubjectWidth;
-                    rowHeight = CalculateRealRowHeight(GetSubjectByLanguage(g), subjectWidth);
+                    rowHeight = CalculateRealRowHeight(subjectPrintText, Math.Max(40, subjectWidth - indentForRow));
 
                     if (secondLeftY + rowHeight > layout.SecondBottomY)
                         area = 3;
@@ -653,7 +661,7 @@ namespace OiTech.App
                 if (area == 3)
                 {
                     subjectWidth = layout.SecondRightSubjectWidth;
-                    rowHeight = CalculateRealRowHeight(GetSubjectByLanguage(g), subjectWidth);
+                    rowHeight = CalculateRealRowHeight(subjectPrintText, Math.Max(40, subjectWidth - indentForRow));
 
                     if (secondRightY + rowHeight > layout.SecondRightBottomY)
                         break;
@@ -826,10 +834,19 @@ namespace OiTech.App
             string subject = GetSubjectByLanguage(g);
             string code = g.SubjectCode?.Trim() ?? "";
 
-            if (!string.IsNullOrWhiteSpace(code))
-                return $"{code} {subject}".Trim();
+            if (string.IsNullOrWhiteSpace(code))
+                return subject;
 
-            return subject;
+            // Если название предмета не нашлось при импорте, ExcelService подставляет
+            // сам код как название (чтобы не терять строку). Тогда subject == code,
+            // и наивная склейка "код + название" печатает код дважды подряд.
+            if (string.IsNullOrWhiteSpace(subject) ||
+                subject.Trim().StartsWith(code, StringComparison.OrdinalIgnoreCase))
+            {
+                return code;
+            }
+
+            return $"{code} {subject}".Trim();
         }
 
         private string GetSubjectByLanguage(GradeEntry g)

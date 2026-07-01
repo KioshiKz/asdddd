@@ -914,16 +914,7 @@ namespace OiTech.App
         {
             double fontSize = DefaultFontSize;
 
-            // Меряем перенос текста по заведомо более узкой ширине, чем реальная
-            // колонка. FormattedText (используется здесь) и TextBlock (реально рисует
-            // текст в AddEditableText) не всегда переносят длинный текст по строкам
-            // одинаково — WPF-квирк, из-за которого точный расчёт может занижать
-            // нужную высоту. Меряя по более узкой ширине, мы намеренно считаем строк
-            // не меньше, чем реально нужно, — то есть эта оценка гарантированно
-            // не меньше настоящей необходимой высоты.
-            double safeWidth = width * 0.8;
-
-            double textHeight = MeasureWrappedTextHeight(subject, safeWidth, fontSize);
+            double textHeight = MeasureWrappedTextHeight(subject, width, fontSize);
             double needed = textHeight + 10.0;
 
             if (needed < MinRowHeight)
@@ -941,33 +932,27 @@ namespace OiTech.App
 
             try
             {
-                double pixelsPerDip = 1.0;
-
-                try
+                // Меряем настоящим TextBlock с теми же свойствами (шрифт, перенос,
+                // LineHeight, Padding), которым AddEditableText реально рисует текст.
+                // Раньше здесь был FormattedText — у него другой алгоритм переноса
+                // строк, чем у TextBlock (известный WPF-квирк), и на длинных
+                // многострочных названиях (например, "РО n.n. ...") оценка высоты
+                // была меньше настоящей, из-за чего текст наезжал на соседние строки.
+                // Измерение тем же контролом, что и рендер, даёт точное совпадение
+                // числа строк без искусственного сужения ширины "про запас".
+                var measureBlock = new TextBlock
                 {
-                    pixelsPerDip = VisualTreeHelper.GetDpi(this).PixelsPerDip;
-                }
-                catch
-                {
-                    pixelsPerDip = 1.0;
-                }
-
-                var formatted = new FormattedText(
-                    clean,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(FixedFontFamily),
-                    fontSize,
-                    Brushes.Black,
-                    pixelsPerDip)
-                {
-                    MaxTextWidth = width,
-                    // Должно совпадать с LineHeight реального TextBlock в AddEditableText,
-                    // иначе расчёт высоты строки занижается и текст накладывается на соседние строки.
-                    LineHeight = Math.Max(SubjectLineHeight + 1.5, fontSize + 1.5)
+                    Text = clean,
+                    FontFamily = new FontFamily(FixedFontFamily),
+                    FontSize = fontSize,
+                    TextWrapping = TextWrapping.Wrap,
+                    LineHeight = Math.Max(SubjectLineHeight + 1.5, fontSize + 1.5),
+                    Padding = new Thickness(0, 2, 0, 2)
                 };
 
-                return formatted.Height;
+                measureBlock.Measure(new Size(Math.Max(1, width), double.PositiveInfinity));
+
+                return measureBlock.DesiredSize.Height;
             }
             catch
             {

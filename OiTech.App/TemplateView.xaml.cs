@@ -1317,6 +1317,18 @@ namespace OiTech.App
             if (key.StartsWith("custom_", StringComparison.OrdinalIgnoreCase))
                 return (defaultX, defaultY);
 
+            // Позиции строк таблицы оценок (subject_N, no_N, ...) считаются заново
+            // при каждой печати, в зависимости от того, что реально пришло из Excel
+            // на этот раз. Индекс N — это порядковый номер в списке предметов
+            // студента, а не привязка к конкретному предмету: если состав/порядок
+            // предметов при импорте изменится (например, раньше выпадавший
+            // предмет теперь появился), сохранённая координата под старым N
+            // окажется применена к совсем другому предмету и собьёт всю раскладку.
+            // Поэтому ручной сдвиг координат сюда не применяется, как и для
+            // текста (см. ApplyTextOverride/IsDynamicDataField).
+            if (IsGradeField(key))
+                return (defaultX, defaultY);
+
             string fullKey = MakeCoordKey(key);
 
             if (_savedCoords.TryGetValue(fullKey, out var saved))
